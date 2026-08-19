@@ -1,1 +1,423 @@
-if game.PlaceId~=6766156863 then game.Players.LocalPlayer:Kick("game not supported")return end local k=game:GetService("Players")local r=k.LocalPlayer local V=game:GetService("UserInputService")local l=game:GetService("VirtualInputManager")local d=game:GetService("HttpService")local B="https://seeclipse.pythonanywhere.com"local f="https://lootdest.org/s?NORUfvwE"local a="SolarKey.txt"local function j(k)local V=tostring(r.UserId)local l,f=pcall(function()return game:HttpGet(B..("/validate?key="..(k..("&userid="..V))))end)if not l then return false,"server offline"end local a,j=pcall(function()return d:JSONDecode(f)end)if not a then return false,"bad response"end return j.valid==true,j.reason or""end local i=""pcall(function()if isfile(a)then i=readfile(a)end end)local e=false if i~=""then e=j(i)end if not e then local k=Instance.new("ScreenGui")k.Name="SolarKeyGui"k.ResetOnSpawn=false k.ZIndexBehavior=Enum.ZIndexBehavior.Sibling k.Parent=r.PlayerGui local V=Instance.new("Frame")V.Size=UDim2.new(0,420,0,270)V.Position=UDim2.new(.5,-210,.5,-135)V.BackgroundColor3=Color3.fromRGB(15,15,15)V.BorderSizePixel=0 V.Parent=k;(Instance.new("UICorner",V)).CornerRadius=UDim.new(0,12)local l=Instance.new("UIStroke",V)l.Color=Color3.fromRGB(168,85,247)l.Thickness=1 local function d(k,r,l,d,B)local f=Instance.new("TextLabel")f.Text=k f.Size=UDim2.new(1,-20,0,r)f.Position=UDim2.new(0,10,0,l)f.BackgroundTransparency=1 f.TextColor3=d or Color3.fromRGB(255,255,255)f.TextSize=B or 14 f.Font=Enum.Font.Gotham f.TextXAlignment=Enum.TextXAlignment.Center f.Parent=V return f end;(d("\226\152\128\239\184\143 Solar \226\128\148 Key Required",30,12,Color3.fromRGB(168,85,247),18)).Font=Enum.Font.GothamBold d("Get your free key by watching 3 short ads:",20,46,Color3.fromRGB(170,170,170),13)d(f,20,68,Color3.fromRGB(100,160,255),12)local B=Instance.new("TextBox")B.PlaceholderText="Paste your key here..."B.Size=UDim2.new(1,-40,0,42)B.Position=UDim2.new(0,20,0,100)B.BackgroundColor3=Color3.fromRGB(25,25,25)B.BorderSizePixel=0 B.TextColor3=Color3.fromRGB(255,255,255)B.PlaceholderColor3=Color3.fromRGB(90,90,90)B.TextSize=13 B.Font=Enum.Font.Code B.ClearTextOnFocus=false B.Parent=V;(Instance.new("UICorner",B)).CornerRadius=UDim.new(0,8)local i=Instance.new("UIStroke",B)i.Color=Color3.fromRGB(60,60,60)local e=Instance.new("TextButton")e.Text="Unlock Script"e.Size=UDim2.new(1,-40,0,42)e.Position=UDim2.new(0,20,0,154)e.BackgroundColor3=Color3.fromRGB(168,85,247)e.BorderSizePixel=0 e.TextColor3=Color3.fromRGB(255,255,255)e.TextSize=15 e.Font=Enum.Font.GothamBold e.Parent=V;(Instance.new("UICorner",e)).CornerRadius=UDim.new(0,8)local R=d("",20,208,Color3.fromRGB(255,80,80),12)local q=false e.MouseButton1Click:Connect(function()local r=B.Text:gsub("%s+","")if r==""then return end e.Text="Checking..."e.Active=false local V,l=j(r)if V then pcall(function()writefile(a,r)end)k:Destroy()q=true else R.Text=l=="expired"and"Key expired \226\128\148 get a new one at the link above"or l=="already_used"and"Key already claimed by another player"or l=="server offline"and"Server offline \226\128\148 try again in a moment"or"Invalid key"e.Text="Unlock Script"e.Active=true end end)repeat task.wait(.1)until q end local R=false local q=16 local y=50 local s=300000000000 local o=700000000000 local J=Vector3.new(5404,12,-2756)local h=_G.SSSquatPos or nil local H=true local Y=V.TouchEnabled and not V.KeyboardEnabled local M=false pcall(function()M=fireproximityprompt~=nil end)local function u()return r.Character end local function O()local k=u()return k and k:FindFirstChild("HumanoidRootPart")end local function g()local k=u()return k and k:FindFirstChildOfClass("Humanoid")end local function U()local k=g()if k then k.WalkSpeed=q k.JumpPower=y end end r.CharacterAdded:Connect(function()task.wait(1)U()end)local function P(k,r)local V=O()if V then V.CFrame=CFrame.new(k+((r or Vector3.new(0,0,0))))end end local function X(k,r)l:SendMouseButtonEvent(k,r,0,true,game,0)task.wait(.05)l:SendMouseButtonEvent(k,r,0,false,game,0)end local function A(k)local r=k.AbsolutePosition local V=k.AbsoluteSize X(r.X+V.X/2,r.Y+V.Y/2)end local function c(k)local r=false pcall(function()local V=getconnections(k.Activated)if#V>0 then V[1]:Fire()r=true end end)if not r then A(k)end end local function C(k)if M then fireproximityprompt(k)elseif not Y then l:SendKeyEvent(true,Enum.KeyCode.E,false,game)task.wait(.05)l:SendKeyEvent(false,Enum.KeyCode.E,false,game)else local k=workspace.CurrentCamera.ViewportSize X(k.X/2,k.Y/2)end end local function W(k)local V,l=pcall(function()return r.PlayerGui.ParticleOverlay.ResourceHolder[k].Counter.TextLabel.ClientComponent_ResourceCounter.CounterValue.Value end)return V and l or 0 end local function I()return W("DefaultCurrencyContainer")end local function m()return W("DefaultStrengthContainer")end local function x()return W("RebirthContainer")end local function v()local k,V=pcall(function()return r.PlayerGui.HUD.RightButtons.Rebirth.Visible end)return k and V end local function E()local k=g()if k then k.Jump=true end task.wait(.3)end local function n()P(J,Vector3.new(0,5,0))task.wait(2)end local K=nil local function Z()n()U()local k=workspace.CurrentCamera.ViewportSize local r=k.X*.5 local V=k.Y-80 while R do if I()>=o then break end if not K or not K.Parent then local k=workspace:FindFirstChild("Area29_Bank")if k then for k,r in ipairs(k:GetDescendants())do if r:IsA("BasePart")and(r.Name:lower()):find("safe")then K=r break end end end if not K then task.wait(.5)continue end end local k=K.Position P(k,Vector3.new(0,2,0))task.wait(.05)local l=K:FindFirstChildOfClass("ProximityPrompt")if l then C(l)end task.wait(.08)P(k,Vector3.new(0,52,0))task.wait(.05)P(k,Vector3.new(0,2,0))task.wait(.05)X(r,V)task.wait(.05)end end local function Q()local k=nil local r=workspace:FindFirstChild("ShopHoop",true)if r then k=r:FindFirstChildOfClass("ProximityPrompt")end if k then local r=k.Parent:IsA("BasePart")and k.Parent or k.Parent.Parent P(r.Position,Vector3.new(0,3,0))task.wait(.5)for r=1,2,1 do C(k)task.wait(.5)end else if not Y then l:SendKeyEvent(true,Enum.KeyCode.E,false,game)task.wait(.1)l:SendKeyEvent(false,Enum.KeyCode.E,false,game)else local k=workspace.CurrentCamera.ViewportSize X(k.X/2,k.Y/2)end end end local t=nil local function G()local k=workspace:FindFirstChild("Area29_Bank")if not k then return nil end for k,r in ipairs(k:GetDescendants())do if r:IsA("ProximityPrompt")and(r.ActionText:lower()):find("squat")then return r end end end local function N()if not t or not t.Parent then t=G()end if not t then return end if h then P(h)else local k=t.Parent:IsA("BasePart")and t.Parent or t.Parent.Parent P(k.Position,Vector3.new(0,3,0))task.wait(.3)local r=O()if r then h=r.Position _G.SSSquatPos=h end end task.wait(.3)U()local k=workspace.CurrentCamera.ViewportSize local r=k.X/2 local V=k.Y/2 while R do if v()then break end C(t)X(r,V)task.wait(.1)end end local function z()local k,V=pcall(function()return r.PlayerGui.HUD.RightButtons.Rebirth end)if k and V then c(V)end task.wait(.5)local l=r.PlayerGui:FindFirstChild("HUD")if l then for k,r in ipairs(l:GetDescendants())do if r:IsA("TextBox")and r.Visible then r:CaptureFocus()r.Text="ok"r:ReleaseFocus(true)task.wait(.3)break end end for k,r in ipairs(l:GetDescendants())do if r:IsA("GuiButton")and((r.Name:lower()):find("confirm")and r.Visible)then c(r)break end end end task.wait(1)E()H=true K=nil t=nil end task.spawn(function()while true do local k=g()if k then k:SetStateEnabled(Enum.HumanoidStateType.FallingDown,false)k:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,false)end task.wait(.1)end end)local function D()n()while R do if v()then z()task.wait(1)n()continue end if I()<s then Z()if not R then break end end if H and not v()then Q()H=false if not R then break end end if not v()then N()end task.wait(.1)end end local T=(loadstring(game:HttpGet("https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/Library.lua")))()local w=(loadstring(game:HttpGet("https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/addons/ThemeManager.lua")))()local F=(loadstring(game:HttpGet("https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/addons/SaveManager.lua")))()local L=T:CreateWindow({Title="Solar",Center=true;AutoShow=true})local S={Main=L:AddTab("Main"),Movement=L:AddTab("Movement")}local b=S.Main:AddLeftGroupbox("Farm")b:AddInput("EnergyMin",{Default=tostring(s),Numeric=true;Finished=true;Text="Energy Min",Callback=function(k)s=tonumber(k)or s end})b:AddInput("EnergyMax",{Default=tostring(o),Numeric=true,Finished=true,Text="Energy Max";Callback=function(k)o=tonumber(k)or o end})b:AddToggle("MasterLoop",{Text="Master Loop",Default=false,Callback=function(k)R=k if k then task.spawn(D)end end})b:AddButton("Unload",function()R=false T:Destroy()end)local p=S.Main:AddRightGroupbox("Stats")local kR=p:AddLabel("Strength: --")local rR=p:AddLabel("Rebirths: --")local VR=p:AddLabel("Energy: --")task.spawn(function()while true do pcall(function()kR:SetText("Strength: "..tostring(m()))rR:SetText("Rebirths: "..tostring(x()))VR:SetText("Energy: "..tostring(I()))end)task.wait(2)end end)local lR=S.Movement:AddLeftGroupbox("Movement")lR:AddSlider("WalkSpeed",{Text="Walk Speed",Default=16;Min=16;Max=200,Rounding=0;Callback=function(k)q=k U()end})lR:AddSlider("JumpPower",{Text="Jump Power",Default=50;Min=50;Max=300;Rounding=0,Callback=function(k)y=k U()end})w:SetLibrary(T)F:SetLibrary(T)w:ApplyToTab(S.Movement)T:Notify({Title="Solar",Content="Loaded | PC/Mobile | Full UNC/Low UNC",Duration=5})
+-- Solar | Strongman Simulator
+if game.PlaceId ~= 6766156863 then
+    game.Players.LocalPlayer:Kick("game not supported")
+    return
+end
+
+local Players     = game:GetService("Players")
+local LP          = Players.LocalPlayer
+local UIS         = game:GetService("UserInputService")
+local VIM         = game:GetService("VirtualInputManager")
+local HttpService = game:GetService("HttpService")
+
+-- KEY SYSTEM
+local BASE_URL  = "https://seeclipse.pythonanywhere.com"
+local LOOTLABS  = "https://lootdest.org/s?NORUfvwE"
+local KEY_FILE  = "SolarKey.txt"
+
+local function validateKey(key)
+    local userId = tostring(LP.UserId)
+    local ok, res = pcall(function()
+        return game:HttpGet(BASE_URL .. "/validate?key=" .. key .. "&userid=" .. userId)
+    end)
+    if not ok then return false, "server offline" end
+    local ok2, data = pcall(function()
+        return HttpService:JSONDecode(res)
+    end)
+    if not ok2 then return false, "bad response" end
+    return data.valid == true, data.reason or ""
+end
+
+local savedKey = ""
+pcall(function() if isfile(KEY_FILE) then savedKey = readfile(KEY_FILE) end end)
+
+local keyValid = false
+if savedKey ~= "" then
+    keyValid = validateKey(savedKey)
+end
+
+if not keyValid then
+    local sg = Instance.new("ScreenGui")
+    sg.Name          = "SolarKeyGui"
+    sg.ResetOnSpawn  = false
+    sg.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    sg.Parent        = LP.PlayerGui
+
+    local frame = Instance.new("Frame")
+    frame.Size            = UDim2.new(0, 420, 0, 270)
+    frame.Position        = UDim2.new(0.5, -210, 0.5, -135)
+    frame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    frame.BorderSizePixel = 0
+    frame.Parent          = sg
+    Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
+    local stroke = Instance.new("UIStroke", frame)
+    stroke.Color     = Color3.fromRGB(168, 85, 247)
+    stroke.Thickness = 1
+
+    local function label(text, size, y, color, fontSize)
+        local l = Instance.new("TextLabel")
+        l.Text              = text
+        l.Size              = UDim2.new(1, -20, 0, size)
+        l.Position          = UDim2.new(0, 10, 0, y)
+        l.BackgroundTransparency = 1
+        l.TextColor3        = color or Color3.fromRGB(255, 255, 255)
+        l.TextSize          = fontSize or 14
+        l.Font              = Enum.Font.Gotham
+        l.TextXAlignment    = Enum.TextXAlignment.Center
+        l.Parent            = frame
+        return l
+    end
+
+    label("☀️ Solar — Key Required", 30, 12, Color3.fromRGB(168, 85, 247), 18).Font = Enum.Font.GothamBold
+    label("Get your free key by watching 3 short ads:", 20, 46, Color3.fromRGB(170, 170, 170), 13)
+    label(LOOTLABS, 20, 68, Color3.fromRGB(100, 160, 255), 12)
+
+    local input = Instance.new("TextBox")
+    input.PlaceholderText  = "Paste your key here..."
+    input.Size             = UDim2.new(1, -40, 0, 42)
+    input.Position         = UDim2.new(0, 20, 0, 100)
+    input.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    input.BorderSizePixel  = 0
+    input.TextColor3       = Color3.fromRGB(255, 255, 255)
+    input.PlaceholderColor3 = Color3.fromRGB(90, 90, 90)
+    input.TextSize         = 13
+    input.Font             = Enum.Font.Code
+    input.ClearTextOnFocus = false
+    input.Parent           = frame
+    Instance.new("UICorner", input).CornerRadius = UDim.new(0, 8)
+    local iStroke = Instance.new("UIStroke", input)
+    iStroke.Color = Color3.fromRGB(60, 60, 60)
+
+    local btn = Instance.new("TextButton")
+    btn.Text             = "Unlock Script"
+    btn.Size             = UDim2.new(1, -40, 0, 42)
+    btn.Position         = UDim2.new(0, 20, 0, 154)
+    btn.BackgroundColor3 = Color3.fromRGB(168, 85, 247)
+    btn.BorderSizePixel  = 0
+    btn.TextColor3       = Color3.fromRGB(255, 255, 255)
+    btn.TextSize         = 15
+    btn.Font             = Enum.Font.GothamBold
+    btn.Parent           = frame
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
+
+    local statusLbl = label("", 20, 208, Color3.fromRGB(255, 80, 80), 12)
+
+    local validated = false
+    btn.MouseButton1Click:Connect(function()
+        local key = input.Text:gsub("%s+", "")
+        if key == "" then return end
+        btn.Text   = "Checking..."
+        btn.Active = false
+        local valid, reason = validateKey(key)
+        if valid then
+            pcall(function() writefile(KEY_FILE, key) end)
+            sg:Destroy()
+            validated = true
+        else
+            statusLbl.Text = reason == "expired"      and "Key expired — get a new one at the link above"
+                          or reason == "already_used" and "Key already claimed by another player"
+                          or reason == "server offline" and "Server offline — try again in a moment"
+                          or "Invalid key"
+            btn.Text   = "Unlock Script"
+            btn.Active = true
+        end
+    end)
+
+    repeat task.wait(0.1) until validated
+end
+
+-- MAIN SCRIPT
+local looping      = false
+local wsValue      = 16
+local jpValue      = 50
+local energyMin    = 300000000000
+local energyMax    = 700000000000
+local bankPos      = Vector3.new(5404, 12, -2756)
+local squatPos     = _G.SSSquatPos or nil
+local needsBuyPets = true
+
+local isMobile  = UIS.TouchEnabled and not UIS.KeyboardEnabled
+local hasFirePP = false
+pcall(function() hasFirePP = fireproximityprompt ~= nil end)
+
+local function getChar() return LP.Character end
+local function getRoot() local c = getChar(); return c and c:FindFirstChild("HumanoidRootPart") end
+local function getHum()  local c = getChar(); return c and c:FindFirstChildOfClass("Humanoid") end
+
+local function applyMovement()
+    local h = getHum()
+    if h then h.WalkSpeed = wsValue; h.JumpPower = jpValue end
+end
+
+LP.CharacterAdded:Connect(function()
+    task.wait(1)
+    applyMovement()
+end)
+
+local function tpTo(pos, offset)
+    local root = getRoot()
+    if root then root.CFrame = CFrame.new(pos + (offset or Vector3.new(0, 0, 0))) end
+end
+
+local function vClick(x, y)
+    VIM:SendMouseButtonEvent(x, y, 0, true,  game, 0)
+    task.wait(0.05)
+    VIM:SendMouseButtonEvent(x, y, 0, false, game, 0)
+end
+
+local function vClickGui(btn)
+    local pos  = btn.AbsolutePosition
+    local size = btn.AbsoluteSize
+    vClick(pos.X + size.X / 2, pos.Y + size.Y / 2)
+end
+
+local function fireButton(btn)
+    local fired = false
+    pcall(function()
+        local conns = getconnections(btn.Activated)
+        if #conns > 0 then conns[1]:Fire(); fired = true end
+    end)
+    if not fired then vClickGui(btn) end
+end
+
+local function triggerPP(pp)
+    if hasFirePP then
+        fireproximityprompt(pp)
+    elseif not isMobile then
+        VIM:SendKeyEvent(true,  Enum.KeyCode.E, false, game)
+        task.wait(0.05)
+        VIM:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+    else
+        local s = workspace.CurrentCamera.ViewportSize
+        vClick(s.X / 2, s.Y / 2)
+    end
+end
+
+local function getStatValue(containerName)
+    local ok, v = pcall(function()
+        return LP.PlayerGui.ParticleOverlay.ResourceHolder[containerName]
+            .Counter.TextLabel.ClientComponent_ResourceCounter.CounterValue.Value
+    end)
+    return ok and v or 0
+end
+
+local function getEnergy()   return getStatValue("DefaultCurrencyContainer") end
+local function getStrength() return getStatValue("DefaultStrengthContainer") end
+local function getRebirths() return getStatValue("RebirthContainer") end
+
+local function rebirthVisible()
+    local ok, v = pcall(function()
+        return LP.PlayerGui.HUD.RightButtons.Rebirth.Visible
+    end)
+    return ok and v
+end
+
+local function jumpDrop()
+    local h = getHum()
+    if h then h.Jump = true end
+    task.wait(0.3)
+end
+
+local function tpToBank()
+    tpTo(bankPos, Vector3.new(0, 5, 0))
+    task.wait(2)
+end
+
+local cachedSafe = nil
+local function farmEnergy()
+    tpToBank()
+    applyMovement()
+
+    local s     = workspace.CurrentCamera.ViewportSize
+    local dropX = s.X * 0.5
+    local dropY = s.Y - 80
+
+    while looping do
+        if getEnergy() >= energyMax then break end
+
+        if not cachedSafe or not cachedSafe.Parent then
+            local bank = workspace:FindFirstChild("Area29_Bank")
+            if bank then
+                for _, d in ipairs(bank:GetDescendants()) do
+                    if d:IsA("BasePart") and d.Name:lower():find("safe") then
+                        cachedSafe = d; break
+                    end
+                end
+            end
+            if not cachedSafe then task.wait(0.5); continue end
+        end
+
+        local floor = cachedSafe.Position
+        tpTo(floor, Vector3.new(0, 2, 0)); task.wait(0.05)
+        local pp = cachedSafe:FindFirstChildOfClass("ProximityPrompt")
+        if pp then triggerPP(pp) end; task.wait(0.08)
+        tpTo(floor, Vector3.new(0, 52, 0)); task.wait(0.05)
+        tpTo(floor, Vector3.new(0, 2, 0));  task.wait(0.05)
+        vClick(dropX, dropY);               task.wait(0.05)
+    end
+end
+
+local function buyPets()
+    local pp   = nil
+    local hoop = workspace:FindFirstChild("ShopHoop", true)
+    if hoop then pp = hoop:FindFirstChildOfClass("ProximityPrompt") end
+
+    if pp then
+        local part = pp.Parent:IsA("BasePart") and pp.Parent or pp.Parent.Parent
+        tpTo(part.Position, Vector3.new(0, 3, 0)); task.wait(0.5)
+        for _ = 1, 2 do triggerPP(pp); task.wait(0.5) end
+    else
+        if not isMobile then
+            VIM:SendKeyEvent(true,  Enum.KeyCode.E, false, game)
+            task.wait(0.1)
+            VIM:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+        else
+            local s = workspace.CurrentCamera.ViewportSize
+            vClick(s.X / 2, s.Y / 2)
+        end
+    end
+end
+
+local cachedSqPP = nil
+local function findSquatPP()
+    local bank = workspace:FindFirstChild("Area29_Bank")
+    if not bank then return nil end
+    for _, d in ipairs(bank:GetDescendants()) do
+        if d:IsA("ProximityPrompt") and d.ActionText:lower():find("squat") then
+            return d
+        end
+    end
+end
+
+local function squatPhase()
+    if not cachedSqPP or not cachedSqPP.Parent then
+        cachedSqPP = findSquatPP()
+    end
+    if not cachedSqPP then return end
+
+    if squatPos then
+        tpTo(squatPos)
+    else
+        local part = cachedSqPP.Parent:IsA("BasePart") and cachedSqPP.Parent or cachedSqPP.Parent.Parent
+        tpTo(part.Position, Vector3.new(0, 3, 0)); task.wait(0.3)
+        local root = getRoot()
+        if root then squatPos = root.Position; _G.SSSquatPos = squatPos end
+    end
+
+    task.wait(0.3)
+    applyMovement()
+
+    local s  = workspace.CurrentCamera.ViewportSize
+    local cx = s.X / 2
+    local cy = s.Y / 2
+
+    while looping do
+        if rebirthVisible() then break end
+        triggerPP(cachedSqPP)
+        vClick(cx, cy)
+        task.wait(0.1)
+    end
+end
+
+local function doRebirth()
+    local ok, btn = pcall(function() return LP.PlayerGui.HUD.RightButtons.Rebirth end)
+    if ok and btn then fireButton(btn) end
+    task.wait(0.5)
+
+    local hud = LP.PlayerGui:FindFirstChild("HUD")
+    if hud then
+        for _, d in ipairs(hud:GetDescendants()) do
+            if d:IsA("TextBox") and d.Visible then
+                d:CaptureFocus(); d.Text = "ok"; d:ReleaseFocus(true)
+                task.wait(0.3); break
+            end
+        end
+        for _, d in ipairs(hud:GetDescendants()) do
+            if d:IsA("GuiButton") and d.Name:lower():find("confirm") and d.Visible then
+                fireButton(d); break
+            end
+        end
+    end
+
+    task.wait(1)
+    jumpDrop()
+    needsBuyPets = true
+    cachedSafe   = nil
+    cachedSqPP   = nil
+end
+
+task.spawn(function()
+    while true do
+        local h = getHum()
+        if h then
+            h:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+            h:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,      false)
+        end
+        task.wait(0.1)
+    end
+end)
+
+local function masterLoop()
+    tpToBank()
+    while looping do
+        if rebirthVisible() then
+            doRebirth(); task.wait(1); tpToBank(); continue
+        end
+        if getEnergy() < energyMin then
+            farmEnergy()
+            if not looping then break end
+        end
+        if needsBuyPets and not rebirthVisible() then
+            buyPets(); needsBuyPets = false
+            if not looping then break end
+        end
+        if not rebirthVisible() then squatPhase() end
+        task.wait(0.1)
+    end
+end
+
+-- UI
+local Linoria = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/Library.lua"
+))()
+local ThemeManager = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/addons/ThemeManager.lua"
+))()
+local SaveManager = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/addons/SaveManager.lua"
+))()
+
+local Window = Linoria:CreateWindow({ Title = "Solar", Center = true, AutoShow = true })
+local Tabs   = { Main = Window:AddTab("Main"), Movement = Window:AddTab("Movement") }
+
+local FarmGroup = Tabs.Main:AddLeftGroupbox("Farm")
+FarmGroup:AddInput("EnergyMin", { Default = tostring(energyMin), Numeric = true, Finished = true, Text = "Energy Min", Callback = function(v) energyMin = tonumber(v) or energyMin end })
+FarmGroup:AddInput("EnergyMax", { Default = tostring(energyMax), Numeric = true, Finished = true, Text = "Energy Max", Callback = function(v) energyMax = tonumber(v) or energyMax end })
+FarmGroup:AddToggle("MasterLoop", { Text = "Master Loop", Default = false, Callback = function(v) looping = v; if v then task.spawn(masterLoop) end end })
+FarmGroup:AddButton("Unload", function() looping = false; Linoria:Destroy() end)
+
+local StatsGroup  = Tabs.Main:AddRightGroupbox("Stats")
+local lblStrength = StatsGroup:AddLabel("Strength: --")
+local lblRebirths = StatsGroup:AddLabel("Rebirths: --")
+local lblEnergy   = StatsGroup:AddLabel("Energy: --")
+
+task.spawn(function()
+    while true do
+        pcall(function()
+            lblStrength:SetText("Strength: "  .. tostring(getStrength()))
+            lblRebirths:SetText("Rebirths: "  .. tostring(getRebirths()))
+            lblEnergy:SetText("Energy: "      .. tostring(getEnergy()))
+        end)
+        task.wait(2)
+    end
+end)
+
+local MovGroup = Tabs.Movement:AddLeftGroupbox("Movement")
+MovGroup:AddSlider("WalkSpeed", { Text = "Walk Speed", Default = 16, Min = 16, Max = 200, Rounding = 0, Callback = function(v) wsValue = v; applyMovement() end })
+MovGroup:AddSlider("JumpPower", { Text = "Jump Power", Default = 50, Min = 50, Max = 300, Rounding = 0, Callback = function(v) jpValue = v; applyMovement() end })
+
+ThemeManager:SetLibrary(Linoria)
+SaveManager:SetLibrary(Linoria)
+ThemeManager:ApplyToTab(Tabs.Movement)
+
+Linoria:Notify({ Title = "Solar", Content = "Loaded | PC/Mobile | Full UNC/Low UNC", Duration = 5 })
